@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Campus Customs — App Check (Problem 11)</title>
+<style>
+  :root { --pink: #ff4fa3; --pink-soft: #ffd1e6; --black: #0a0a0a; --card: #171717; --line: #2c2c2c; --muted: #a8a8a8; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--black); color: #f5f5f5; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.55; }
+  header { display: flex; align-items: center; gap: 1.2rem; padding: 1.4rem 2rem; border-bottom: 3px solid var(--pink); flex-wrap: wrap; }
+  header img { height: 54px; background: #fff; border-radius: 8px; padding: 4px 8px; }
+  header h1 { margin: 0; font-family: Georgia, serif; font-size: 1.9rem; }
+  header h1 span { color: var(--pink); font-style: italic; }
+  header p { margin: .2rem 0 0; color: var(--muted); }
+  main { max-width: 1040px; margin: 0 auto; padding: 1.5rem 1.5rem 3rem; }
+  .summary { background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--pink); border-radius: 14px; padding: 1rem 1.3rem; margin-bottom: 2rem; }
+  .summary table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  .summary td, .summary th { text-align: left; padding: .45rem .4rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .summary th { color: var(--pink-soft); font-weight: 600; }
+  .pass { color: #0a0a0a; background: var(--pink); font-weight: 800; border-radius: 999px; padding: .1rem .6rem; font-size: .8rem; white-space: nowrap; }
+  section.check { margin: 2.6rem 0; }
+  section.check h2 { font-family: Georgia, serif; font-size: 1.6rem; margin: 0 0 .3rem; display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; }
+  .num { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--pink); color: #0a0a0a; font-weight: 900; font-family: Georgia, serif; }
+  .how { color: var(--muted); margin: .2rem 0 1rem; font-size: .95rem; }
+  figure { margin: 0 0 1.4rem; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  figure img { display: block; width: 100%; height: auto; border-bottom: 1px solid var(--line); }
+  figcaption { padding: .8rem 1.1rem; font-size: .97rem; }
+  figcaption b { color: var(--pink); }
+  .proof { background: #101010; border: 1px dashed #444; border-radius: 10px; padding: .6rem .9rem; font-family: ui-monospace, Consolas, monospace; font-size: .85rem; color: var(--pink-soft); margin: .4rem 1.1rem 1rem; white-space: pre-wrap; }
+  footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 2rem; border-top: 1px solid var(--line); }
+  .labubu { vertical-align: middle; }
+</style>
+</head>
+<body>
+<header>
+  <img src="app_check_images/som-logo.jpg" alt="Yale School of Management logo" />
+  <div>
+    <h1>Campus Customs <span>App Check</span></h1>
+    <p>Problem 11 · Live-site test of the running app (React + FastAPI + PydanticAI agent on gpt-5.6-luna) · tested 7 Oct 2026</p>
+  </div>
+  <svg class="labubu" width="56" height="56" viewBox="0 0 100 100" aria-hidden="true">
+    <ellipse cx="33" cy="22" rx="9" ry="20" fill="#ff4fa3" transform="rotate(-12 33 22)"/><ellipse cx="67" cy="22" rx="9" ry="20" fill="#ff4fa3" transform="rotate(12 67 22)"/>
+    <circle cx="50" cy="58" r="32" fill="#ff4fa3"/><ellipse cx="50" cy="62" rx="23" ry="20" fill="#ffe4f0"/>
+    <ellipse cx="40" cy="56" rx="5" ry="6.5" fill="#111"/><ellipse cx="60" cy="56" rx="5" ry="6.5" fill="#111"/>
+    <path d="M38 69 Q50 79 62 69 Z" fill="#111"/><path d="M40 69.5 L42.5 73 L45 70.5 L47.5 74 L50 71 L52.5 74 L55 70.5 L57.5 73 L60 69.5 Z" fill="#fff"/>
+  </svg>
+</header>
+
+<main>
+  <div class="summary">
+    <table>
+      <tr><th>#</th><th>Check</th><th>Result</th></tr>
+      <tr><td>1</td><td>Chat checks an item's inventory level and price, honestly, from the database</td><td><span class="pass">PASS</span></td></tr>
+      <tr><td>2</td><td>A category question ("hoodies") makes dynamic product cards appear on the page, and they open the detail page</td><td><span class="pass">PASS</span></td></tr>
+      <tr><td>3</td><td>Problem 9 usability features: sold-out "Find alternatives" chip + alternatives tool (bonus: shopping bag)</td><td><span class="pass">PASS</span></td></tr>
+    </table>
+  </div>
+
+  <!-- CHECK 1 -->
+  <section class="check" id="check-1">
+    <h2><span class="num">1</span> Chat checks inventory level (honest stock and price)</h2>
+    <p class="how">On the <b>Yale Grandma Hoodie</b> product page (as a guest) I asked the chat: <i>"How many of this are left in XXL, and what does it cost? Is M available?"</i></p>
+    <figure>
+      <img src="app_check_images/inventory.png" alt="Chat reply: Yale Grandma Hoodie is $68, 5 left in XXL, M sold out" />
+      <figcaption><b>Proves:</b> Boola worked out that "this" meant the open product and answered from the database: <b>$68</b>, <b>5 left in XXL</b> (flagged as low stock), and <b>M sold out</b>. It then offered in-stock family-gift alternatives instead of inventing stock.</figcaption>
+      <div class="proof">Database (campus_customs.db): price = 68.0 · XS 12 · S 0 · M 0 · L 20 · XL 0 · XXL 5  ✔ matches the reply</div>
+    </figure>
+    <figure>
+      <img src="app_check_images/inventory_page.png" alt="Product page size grid: XXL only 5 left, S M XL sold out" />
+      <figcaption><b>Proves:</b> the product page's own size grid shows the same live numbers (XXL "Only 5 left"; S, M and XL struck through as sold out), so the chat and the page agree.</figcaption>
+    </figure>
+  </section>
+
+  <!-- CHECK 2 -->
+  <section class="check" id="check-2">
+    <h2><span class="num">2</span> Dynamic search cards after a category question</h2>
+    <p class="how">Starting on the <b>Home</b> page, I asked the chat: <i>"Which hoodies do you have?"</i></p>
+    <figure>
+      <img src="app_check_images/hoodie_search.png" alt="Products page showing 'Boola found 27 items — Hoodies' with hoodie product cards; chat reply on the right" />
+      <figcaption><b>Proves:</b> the agent returned structured matches and the site moved to <b>Products</b>, showing a <b>"Boola found 27 items · Hoodies"</b> panel of product cards (image, name, price, short description, size dots). The chat gives a short summary and a "▸ 27 Hoodies shown on the page" link.</figcaption>
+      <div class="proof">Database: 27 products whose garment_type contains "hood" ✔ (all 27 rendered as cards)</div>
+    </figure>
+    <figure>
+      <img src="app_check_images/search_card_detail.png" alt="Champion Full Zip Hood detail page opened from a chat result card" />
+      <figcaption><b>Proves:</b> clicking a card the chat had just placed (<b>Champion Full Zip Hood</b>) opens the Problem 3 single-item page: large image plus full description, $88.00 price, colours, and stock by size.</figcaption>
+    </figure>
+  </section>
+
+  <!-- CHECK 3 -->
+  <section class="check" id="check-3">
+    <h2><span class="num">3</span> Usability feature from Problem 9: "Sold out? Find alternatives"</h2>
+    <p class="how">On the Yale Grandma Hoodie page, the "Ask Boola" row shows a highlighted <b>"Sold out in S? Find alternatives"</b> chip, visible in the check 1 screenshot above. I clicked it.</p>
+    <figure>
+      <img src="app_check_images/usability_alternatives.png" alt="Chat suggests Yale Aunt, Dad and Mom hoodies in stock in S after the sold-out chip was clicked" />
+      <figcaption><b>Proves:</b> one tap (front-end improvement #1) opened the chat and asked the question. The new <b>find_alternatives</b> tool (backend improvement #3) returned similar <b>family-gift hoodies that are in stock in S</b> (Aunt, Dad, Mom, all $68), with clickable mini cards.</figcaption>
+      <div class="proof">Database, size S stock: yale-aunt-hoodie 12 · yale-dad-hoodie 5 · yale-mom-hoodie 8  ✔ all genuinely in stock</div>
+    </figure>
+    <figure>
+      <img src="app_check_images/usability_bag.png" alt="Shopping bag drawer with two Champion Full Zip Hood lines, max in stock reached for M, subtotal $528" />
+      <figcaption><b>Bonus, the shopping bag (front-end improvement #2):</b> "Add to bag" works, the nav badge counts 6 items, and the drawer shows size, quantity, line totals and a <b>$528.00</b> subtotal. Quantity is capped at real stock: M shows "max in stock" at 5 units, the database value.</figcaption>
+    </figure>
+  </section>
+</main>
+
+<footer>Campus Customs · built by Ria Vijh for AI @ Yale SOM · screenshots captured from the live app at localhost:5173</footer>
+</body>
+</html>
